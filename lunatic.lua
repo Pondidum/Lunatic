@@ -1,3 +1,4 @@
+local VERSION = "0.0.1"
 
 local testRunner = {}
 
@@ -89,6 +90,12 @@ local testEngine = {
 		end
 
 		return this
+
+	end,
+
+	version = function()
+
+		print("Lunatic.lua, version ".. VERSION)
 
 	end,
 
