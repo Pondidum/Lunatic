@@ -18,10 +18,12 @@ engine.add("Example Tests", {
 
 	before = function()
 		-- optional, do your setup
+		-- runs before every test
 	end,
 
 	after = function()
 		-- optional, do any clean up
+		-- runs after every test
 	end,
 
 	When_a_test_raises_an_error = function()
