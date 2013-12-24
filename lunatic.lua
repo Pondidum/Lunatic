@@ -49,3 +49,47 @@ testRunner.runSet = function(set)
 	return result
 
 end
+
+local testEngine = {
+
+	new = function()
+
+		local this = {}
+		local sets = {}
+		local results = {}
+
+		this.add = function(name, set)
+			sets[name] = set
+		end
+
+		this.run = function()
+
+			results = {}
+
+			for name, set in pairs(sets) do
+				results[name] = testRunner.runSet(set)
+			end
+
+		end
+
+		this.results = function()
+			return results
+		end
+
+		this.print = function()
+
+			for name, setResults in pairs(results) do
+				print(name .. ":")
+
+				for testName, result in pairs(setResults) do
+					print("  ", testName, result)
+				end
+			end
+
+		end
+
+		return this
+
+	end,
+
+}
