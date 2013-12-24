@@ -10,7 +10,7 @@ testRunner.run = function(before, test, after)
 	local action = function()
 
 		if before then
-			pcall(before)
+			before()
 		end
 
 		local success, e = pcall(test)
@@ -23,7 +23,7 @@ testRunner.run = function(before, test, after)
 
 	end
 
-	local s, e = action()
+	local s, e = pcall(action)
 
 	setfenv(1, old)
 
