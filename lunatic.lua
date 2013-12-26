@@ -61,8 +61,8 @@ local testEngine = {
 
 		this.add = function(name, set)
 
-			assert(type(name) == "string")
-			assert(type(set) == "set")
+			assert(type(name) == "string", "must be a name/description of the test set.")
+			assert(type(set) == "table", "must be a table of tests to run.")
 
 			sets[name] = set
 		end
