@@ -60,6 +60,10 @@ local testEngine = {
 		local results = {}
 
 		this.add = function(name, set)
+
+			assert(type(name) == "string")
+			assert(type(set) == "set")
+
 			sets[name] = set
 		end
 
