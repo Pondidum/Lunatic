@@ -218,6 +218,10 @@ local testEngine = {
 
 	end,
 
+	__private = {
+		runner = testRunner,
+	},
+
 }
 
 return testEngine
