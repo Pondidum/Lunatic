@@ -11,20 +11,31 @@ testRunner.run = function(before, test, after)
 	local action = function()
 
 		if before then
-			before()
+			local beforeSuccess, beforeError = pcall(before)
+
+			if not beforeSuccess then
+				return beforeSuccess, beforeError
+			end
+
 		end
 
-		local success, e = pcall(test)
+		local actionSuccess, actionError = pcall(test)
 
 		if after then
-			after()
+
+			local afterSuccess, afterError = pcall(after)
+
+			if not afterSuccess and actionSuccess then
+				return afterSuccess, afterError
+			end
+
 		end
 
-		return success, e
+		return actionSuccess, actionError
 
 	end
 
-	local s, e = pcall(action)
+	local s, e = action()
 
 	setfenv(1, old)
 
