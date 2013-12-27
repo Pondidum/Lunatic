@@ -175,10 +175,10 @@ local testEngine = {
 			print("Tests run:")
 
 			for name, setResults in pairs(results) do
-				print("  ", name .. ":")
+				print("	", name .. ":")
 
 				for testName, result in pairs(setResults) do
-					print("    ", testName, result.success and "passed" or "failed" )
+					print("		", testName, result.success and "passed" or "failed" )
 
 					if not result.success then
 						fails[testName] = result
@@ -193,7 +193,7 @@ local testEngine = {
 				print("Details")
 
 				for testName, result in pairs(fails) do
-					print("    ", testName, result.message)
+					print("		", testName, result.message)
 				end
 
 			end
