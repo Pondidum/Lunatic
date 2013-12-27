@@ -1,70 +1,8 @@
 local VERSION = "0.0.3"
 
-local testRunner = {}
 
-testRunner.run = function(before, test, after)
-
-	local old = getfenv()
-
-	setfenv(1, setmetatable({}, { __index = old }))
-
-	local action = function()
-
-		if before then
-			local beforeSuccess, beforeError = pcall(before)
-
-			if not beforeSuccess then
-				return beforeSuccess, beforeError
-			end
-
-		end
-
-		local actionSuccess, actionError = pcall(test)
-
-		if after then
-
-			local afterSuccess, afterError = pcall(after)
-
-			if not afterSuccess and actionSuccess then
-				return afterSuccess, afterError
-			end
-
-		end
-
-		return actionSuccess, actionError
-
-	end
-
-	local s, e = action()
-
-	setfenv(1, old)
-
-	return s, e
-
-end
-
-testRunner.runSet = function(set)
-
-	local before = set.before
-	local after = set.after
-
-	local result = {}
-
-	for k,v in pairs(set) do
-
-		if k ~= "before" and k ~= "after" then
-
-			local s, e = testRunner.run(before, v, after)
-
-			result[k] = { success = s, message = e }
-
-		end
-
-	end
-
-	return result
-
-end
+-- Assertion helper library
+---------------------------------------
 
 local should = {
 
@@ -133,6 +71,76 @@ local should = {
 	end,
 
 }
+
+
+-- Testing Engine:
+---------------------------------------
+
+local testRunner = {}
+
+testRunner.run = function(before, test, after)
+
+	local old = getfenv()
+
+	setfenv(1, setmetatable({}, { __index = old }))
+
+	local action = function()
+
+		if before then
+			local beforeSuccess, beforeError = pcall(before)
+
+			if not beforeSuccess then
+				return beforeSuccess, beforeError
+			end
+
+		end
+
+		local actionSuccess, actionError = pcall(test)
+
+		if after then
+
+			local afterSuccess, afterError = pcall(after)
+
+			if not afterSuccess and actionSuccess then
+				return afterSuccess, afterError
+			end
+
+		end
+
+		return actionSuccess, actionError
+
+	end
+
+	local s, e = action()
+
+	setfenv(1, old)
+
+	return s, e
+
+end
+
+testRunner.runSet = function(set)
+
+	local before = set.before
+	local after = set.after
+
+	local result = {}
+
+	for k,v in pairs(set) do
+
+		if k ~= "before" and k ~= "after" then
+
+			local s, e = testRunner.run(before, v, after)
+
+			result[k] = { success = s, message = e }
+
+		end
+
+	end
+
+	return result
+
+end
 
 local testEngine = {
 
