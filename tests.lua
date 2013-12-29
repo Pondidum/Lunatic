@@ -1,106 +1,21 @@
-local lunatic = require("lunatic")
-local tests = lunatic.new()
+local project = loadfile("lib\\project.lua")()
 
-local runner = lunatic.__private.runner
+local testProject = project:new({
 
-tests.add("testRunner.run tests", {
+	files = project:io(function(io)
 
-	When_before_fails_and_action_passes_and_after_passes = function()
+		io.addFile("tests\\init.lua")
+		io.addFilesIn("tests")
 
-		local before = function() error("before") end
-		local action = function() end
-		local after = function() end
+	end),
 
-		local s, e = runner.run(before, action, after)
+	run = function(ns)
 
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("before$"), "Error should be from 'before'.")
-
-	end,
-
-	When_before_passes_and_action_fails_and_after_passes = function()
-
-		local before = function() end
-		local action = function() error("action") end
-		local after = function() end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("action$"), "Error should be from 'action'.")
-
-	end,
-
-	When_before_fails_and_action_fails_and_after_passes = function()
-
-		local before = function() error("before") end
-		local action = function() error("action") end
-		local after = function() end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("before$"), "Error should be from 'before'.")
-
-	end,
-
-	When_before_passes_and_action_passes_and_after_fails = function()
-
-		local before = function() end
-		local action = function() end
-		local after = function() error("after") end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("after$"), "Error should be from 'after'.")
-
-	end,
-
-	When_before_fails_and_action_passes_and_after_fails = function()
-
-		local before = function() error("before") end
-		local action = function() end
-		local after = function() error("after") end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("before$"), "Error should be from 'before'.")
-
-	end,
-
-	When_before_passes_and_action_fails_and_after_fails = function()
-
-		local before = function() end
-		local action = function() error("action") end
-		local after = function() error("after") end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("action$"), "Error should be from 'action'.")
-
-	end,
-
-	When_before_fails_and_action_fails_and_after_fails = function()
-
-		local before = function() error("before") end
-		local action = function() error("action") end
-		local after = function() error("after") end
-
-		local s, e = runner.run(before, action, after)
-
-		assert(s ~= true, "Test should not have succeeded.")
-		assert(e:find("before$"), "Error should be from 'before'.")
+		ns.tests.run()
+		ns.tests.print()
 
 	end,
 
 })
 
-
-
--- run tests:
----------------------------------------
-tests.run()
-tests.print()
+testProject.run()
