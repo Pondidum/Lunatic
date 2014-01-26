@@ -100,7 +100,7 @@ local testEngine = {
 					local test = set[testName]
 					assert(test, string.format("Unable to find a test called %s.", testName))
 
-					results[setName] = testRunner.runSet({ before = set.before, testName = test, after = set.after })
+					results[setName] = testRunner.runSet({ before = set.before, [testName] = test, after = set.after })
 
 				else
 					results[setName] = testRunner.runSet(set)
